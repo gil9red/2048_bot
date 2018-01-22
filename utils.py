@@ -13,11 +13,12 @@ class NotFoundItem(Exception):
 
 
 def get_logger(name=__file__, file='log.txt', encoding='utf-8', dir_name='logs'):
-    import os
-    if not os.path.exists(dir_name):
-        os.makedirs(dir_name)
+    if dir_name:
+        import os
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
 
-    file = dir_name + '/' + file
+        file = dir_name + '/' + file
 
     import logging
     log = logging.getLogger(name)
@@ -339,13 +340,20 @@ def locate_center_on_screen(needle_image, screenshot_image=None):
     return pyautogui.locateCenterOnScreen(needle_image)
 
 
-def make_screenshot(prefix=''):
-    pil_image = pyautogui.screenshot()
-
+def make_screenshot(prefix='', dir_name='screenshots'):
     from datetime import datetime
     file_name = datetime.now().strftime(prefix + '%d%m%y %H%M%S.jpg')
+
+    if dir_name:
+        import os
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
+
+        file_name = dir_name + '/' + file_name
+
     log.info('Сохранение скриншота в ' + file_name)
 
+    pil_image = pyautogui.screenshot()
     pil_image.save(file_name)
 
     return pil_image
