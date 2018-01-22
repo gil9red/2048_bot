@@ -5,9 +5,15 @@
 __author__ = 'ipetrash'
 
 
+# pip install opencv-python
 import cv2
+
+# install with opencv-python
 import numpy as np
+
+# pip install pyautogui
 import pyautogui
+
 import time
 
 import utils
