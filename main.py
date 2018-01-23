@@ -20,6 +20,9 @@ import utils
 log = utils.log
 
 
+# TODO: нужно поменять способ нахождения этих кнопок, т.к. была замечена разница в скриншотах на разных системах
+#       думаю, нужно искать контуры этих кнопок и аналитически рассчитывать что сейчас происходит.
+#       Например, если кнопки сразу две, то левая это BUTTON_CONTINUE, если кнопка одна, то -- BUTTON_PLAY_AGAIN
 BUTTON_CONTINUE = 'button/continue.png'
 BUTTON_PLAY_AGAIN = 'button/play_again.png'
 
