@@ -140,14 +140,17 @@ import utils
 # 3) Найти поцизию board на скриншоте
 # 4) Составить абсолютные позиции кнопок на скриншоте
 
-img = cv2.imread('unnecessary/next_game__full_screen.png')
-board = img
+cv2_show = lambda x: cv2.imshow(str(x), x)
+
+full_img = cv2.imread('unnecessary/next_game__full_screen.png')
+# cv2_show(full_img)
+# board = img
 
 # img = cv2.imread('unnecessary/next_game.png')
-# cv2.imshow(str(img), img)
-#
-# board = utils.get_game_board(img)
-# cv2.imshow(str(board), board)
+# cv2_show(str(img), img)
+
+board = utils.get_game_board(full_img)
+# cv2_show(board)
 
 
 gray = cv2.cvtColor(board, cv2.COLOR_BGR2GRAY)
@@ -173,6 +176,6 @@ sorted_contours = sorted(contours, key=lambda x: cv2.boundingRect(x)[0])
 
 img_with_contour = board.copy()
 cv2.drawContours(img_with_contour, sorted_contours, 0, (0, 255, 0), 3)
-cv2.imshow(str(img_with_contour), img_with_contour)
+cv2_show(img_with_contour)
 
 cv2.waitKey()
