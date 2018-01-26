@@ -134,6 +134,12 @@ __author__ = 'ipetrash'
 import cv2
 import utils
 
+# TODO:
+# 1) Найти board
+# 2) Найти кнопки на board
+# 3) Найти поцизию board на скриншоте
+# 4) Составить абсолютные позиции кнопок на скриншоте
+
 img = cv2.imread('unnecessary/next_game__full_screen.png')
 board = img
 
