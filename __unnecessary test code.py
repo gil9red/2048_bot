@@ -130,3 +130,13 @@ __author__ = 'ipetrash'
 # cv2.waitKey()
 # cv2.destroyAllWindows()
 # quit()
+
+import cv2
+from utils import get_game_board
+
+img = cv2.imread('unnecessary/next_game.png')
+cv2.imshow(str(img), img)
+
+board = get_game_board(img)
+cv2.imshow(str(board), board)
+cv2.waitKey()
