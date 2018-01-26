@@ -132,17 +132,14 @@ __author__ = 'ipetrash'
 # quit()
 
 import cv2
+import pyautogui
 import utils
 
-# TODO:
-# 1) Найти board
-# 2) Найти кнопки на board
-# 3) Найти поцизию board на скриншоте
-# 4) Составить абсолютные позиции кнопок на скриншоте
 
 cv2_show = lambda x: cv2.imshow(str(x), x)
 
 full_img = cv2.imread('unnecessary/next_game__full_screen.png')
+
 # cv2_show(full_img)
 # board = img
 
@@ -150,8 +147,7 @@ full_img = cv2.imread('unnecessary/next_game__full_screen.png')
 # cv2_show(str(img), img)
 
 board = utils.get_game_board(full_img)
-# cv2_show(board)
-
+board_coords = pyautogui.locate(board, full_img, grayscale=True)
 
 gray = cv2.cvtColor(board, cv2.COLOR_BGR2GRAY)
 # cv2.imshow(str(gray), gray)
@@ -177,5 +173,19 @@ sorted_contours = sorted(contours, key=lambda x: cv2.boundingRect(x)[0])
 img_with_contour = board.copy()
 cv2.drawContours(img_with_contour, sorted_contours, 0, (0, 255, 0), 3)
 cv2_show(img_with_contour)
+
+
+# Find and draw need button
+button_coords = cv2.boundingRect(sorted_contours[0])
+print(button_coords)
+
+abs_button_coords = (board_coords[0] + button_coords[0], board_coords[1] + button_coords[1], button_coords[2], button_coords[3])
+print('abs_button_coords:', abs_button_coords, pyautogui.center(abs_button_coords))
+x, y, w, h = abs_button_coords
+
+full_img_copy = full_img.copy()
+cv2.rectangle(full_img_copy, (x, y), (x + w, y + h), (0, 255, 0), thickness=4)
+cv2_show(full_img_copy)
+
 
 cv2.waitKey()
