@@ -140,6 +140,7 @@ import utils
 
 cv2_show = lambda x: cv2.imshow(str(x), x)
 
+full_img = cv2.imread('unnecessary/end_game.png')
 full_img = cv2.imread('unnecessary/next_game__full_screen.png')
 
 
@@ -200,7 +201,7 @@ def get_button_coords_list(full_img):
 
 
 button_coords_list = get_button_coords_list(full_img)
-print(button_coords_list)
+print('button_coords_list', button_coords_list)
 
 full_img_copy = full_img.copy()
 
