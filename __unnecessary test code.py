@@ -132,7 +132,6 @@ __author__ = 'ipetrash'
 # quit()
 
 
-
 import cv2
 import pyautogui
 import utils
@@ -154,7 +153,7 @@ def get_button_coords_list(full_img):
     gray = cv2.cvtColor(board, cv2.COLOR_BGR2GRAY)
     # cv2.imshow(str(gray), gray)
 
-    ret, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+    ret, thresh = cv2.threshold(gray, 130, 255, cv2.THRESH_BINARY)
     # cv2.imshow(str(thresh), thresh)
 
     img_contours, contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -166,14 +165,14 @@ def get_button_coords_list(full_img):
     # img_with_contour = board.copy()
     # cv2.drawContours(img_with_contour, contours, -1, (0, 255, 0), 3)
     # cv2_show(img_with_contour)
-
+    #
     # rect_contours = sorted([cv2.boundingRect(i) for i in contours], key=lambda x: x[0])
     # print(rect_contours)
 
     # Sort by X
     sorted_contours = sorted(contours, key=lambda x: cv2.boundingRect(x)[0])
     # print(sorted_contours)
-
+    #
     # img_with_contour = board.copy()
     # cv2.drawContours(img_with_contour, sorted_contours, -1, (0, 255, 0), 3)
     # cv2_show(img_with_contour)
@@ -204,7 +203,7 @@ for file_name in screenshot_list:
     full_img = cv2.imread(file_name)
 
     button_coords_list = get_button_coords_list(full_img)
-    print('button_coords_list', button_coords_list)
+    print('button_coords_list({}): {}'.format(len(button_coords_list), button_coords_list))
 
     full_img_copy = full_img.copy()
 
