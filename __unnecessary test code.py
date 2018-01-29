@@ -140,9 +140,6 @@ import utils
 
 cv2_show = lambda x: cv2.imshow(str(x), x)
 
-full_img = cv2.imread('unnecessary/end_game.png')
-full_img = cv2.imread('unnecessary/next_game__full_screen.png')
-
 
 def get_button_coords_list(full_img):
     # cv2_show(full_img)
@@ -200,16 +197,23 @@ def get_button_coords_list(full_img):
     return button_coords_list
 
 
-button_coords_list = get_button_coords_list(full_img)
-print('button_coords_list', button_coords_list)
+import glob
+screenshot_list = glob.glob('unnecessary/*.png') + glob.glob('unnecessary/*.jpg')
 
-full_img_copy = full_img.copy()
+for file_name in screenshot_list:
+    full_img = cv2.imread(file_name)
 
-# Draw rect buttons
-for (x, y, w, h) in button_coords_list:
-    cv2.rectangle(full_img_copy, (x, y), (x + w, y + h), (0, 255, 0), thickness=4)
+    button_coords_list = get_button_coords_list(full_img)
+    print('button_coords_list', button_coords_list)
 
-cv2_show(full_img_copy)
+    full_img_copy = full_img.copy()
+
+    # Draw rect buttons
+    for (x, y, w, h) in button_coords_list:
+        cv2.rectangle(full_img_copy, (x, y), (x + w, y + h), (0, 255, 0), thickness=4)
+
+    cv2.imshow(file_name, full_img_copy)
+    # cv2_show(full_img_copy)
 
 
 cv2.waitKey()
