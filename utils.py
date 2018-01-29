@@ -317,6 +317,56 @@ def get_main_color_bgr(image):
     return items[0][0]
 
 
+def get_button_coords_list(full_img):
+    board = get_game_board(full_img)
+    board_coords = pyautogui.locate(board, full_img, grayscale=True)
+
+    gray = cv2.cvtColor(board, cv2.COLOR_BGR2GRAY)
+    # cv2.imshow(str(gray), gray)
+
+    ret, thresh = cv2.threshold(gray, 130, 255, cv2.THRESH_BINARY)
+    # cv2.imshow(str(thresh), thresh)
+
+    img_contours, contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    log.debug('contours(%s): %s', len(contours), [cv2.contourArea(i) for i in contours])
+
+    contours = [i for i in contours if cv2.contourArea(i) > 6000 and cv2.contourArea(i) < 7000]
+    log.debug('filtered contours(%s): %s', len(contours), [cv2.contourArea(i) for i in contours])
+
+    # img_with_contour = board.copy()
+    # cv2.drawContours(img_with_contour, contours, -1, (0, 255, 0), 3)
+    # cv2_show(img_with_contour)
+    #
+    # rect_contours = sorted([cv2.boundingRect(i) for i in contours], key=lambda x: x[0])
+    # print(rect_contours)
+
+    # Sort by X
+    sorted_contours = sorted(contours, key=lambda x: cv2.boundingRect(x)[0])
+    # print(sorted_contours)
+    #
+    # img_with_contour = board.copy()
+    # cv2.drawContours(img_with_contour, sorted_contours, -1, (0, 255, 0), 3)
+    # cv2_show(img_with_contour)
+
+    button_coords_list = []
+
+    for contour in sorted_contours:
+        x, y, w, h = cv2.boundingRect(contour)
+
+        coords = (board_coords[0] + x, board_coords[1] + y, w, h)
+        button_coords_list.append(coords)
+
+    # # Find and draw need button
+    # button_coords = cv2.boundingRect(sorted_contours[0])
+    # print(button_coords)
+    #
+    # abs_button_coords = (board_coords[0] + button_coords[0], board_coords[1] + button_coords[1], button_coords[2], button_coords[3])
+    # print('abs_button_coords:', abs_button_coords, pyautogui.center(abs_button_coords))
+    # # x, y, w, h = abs_button_coords
+
+    return button_coords_list
+
+
 def get_next_move(value_matrix):
     # SOURCE: https://github.com/eshirazi/2048-bot
     from eshirazi_2048_bot.board import Board

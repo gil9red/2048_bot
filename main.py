@@ -20,12 +20,6 @@ import utils
 log = utils.log
 
 
-# TODO: нужно поменять способ нахождения этих кнопок, т.к. была замечена разница в скриншотах на разных системах
-#       думаю, нужно искать контуры этих кнопок и аналитически рассчитывать что сейчас происходит.
-#       Например, если кнопки сразу две, то левая это BUTTON_CONTINUE, если кнопка одна, то -- BUTTON_PLAY_AGAIN
-BUTTON_CONTINUE = 'button/continue.png'
-BUTTON_PLAY_AGAIN = 'button/play_again.png'
-
 # TODO: проверить опции:
 # # Speed-up using multithreads
 # cv2.setUseOptimized(True)
@@ -40,28 +34,38 @@ while True:
         pil_image = pyautogui.screenshot()
         log.debug('Get screenshot: %s', pil_image)
 
-        # Появляется кнопка при получении ячейки 2048
-        pos = utils.locate_center_on_screen(BUTTON_CONTINUE, pil_image)
-        if pos:
+        opencv_image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+
+        # Получаем список кнопок, который преобразуется в список центральных точек кнопок
+        buttons = [pyautogui.center(rect) for rect in utils.get_button_coords_list(opencv_image)]
+        number_buttons = len(buttons)
+
+        if number_buttons > 2:
+            log.warning('Found more than expected buttons: %s', number_buttons)
+
+            utils.make_screenshot(prefix='strange__')
+            quit()
+
+        # Две кнопки: "Продолжить" и "Играть снова!". Появляются при получении ячейки 2048
+        elif number_buttons == 2:
+            pos = buttons[0]
             log.debug('Found BUTTON_CONTINUE, pos: %s', pos)
 
             # Клик на кнопку и ожидание
             pyautogui.click(pos, pause=10)
+            continue
 
-        # Появляется кнопка при проигрыше
-        pos = utils.locate_center_on_screen(BUTTON_PLAY_AGAIN, pil_image)
-        if pos:
+        # Кнопка "Играть снова!". Появляется кнопка при проигрыше
+        elif number_buttons == 1:
+            pos = buttons[0]
             log.debug('Found BUTTON_PLAY_AGAIN, pos: %s', pos)
 
             utils.make_screenshot(prefix='end_game__')
 
             # Клик на кнопку и ожидание
             pyautogui.click(pos, pause=10)
+            continue
 
-        pil_image = pyautogui.screenshot()
-        # log.debug('Get screenshot: %s', pil_image)
-
-        opencv_image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
         board_img = utils.get_game_board(opencv_image)
         log.debug('Found board: %s', board_img.shape[:2])
 
