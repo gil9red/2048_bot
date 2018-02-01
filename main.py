@@ -72,7 +72,7 @@ while True:
         value_matrix = utils.get_value_matrix_from_board(board_img)
         # log.debug('value_matrix: %s', value_matrix)
 
-        next_move = utils.get_next_move(value_matrix)
+        next_move = utils.get_next_move(value_matrix).lower()
         log.debug('next_move: %s', next_move)
 
         # Посылаем нужный клик на стрелки
