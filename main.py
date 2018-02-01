@@ -76,7 +76,7 @@ while True:
         log.debug('next_move: %s', next_move)
 
         # Посылаем нужный клик на стрелки
-        pyautogui.typewrite([next_move], pause=2)
+        pyautogui.press(next_move, pause=2)
 
     except utils.NotFoundItem as e:
         log.info(e)
