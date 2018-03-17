@@ -100,7 +100,7 @@ def get_game_board(img__or__file_name):
 def get_cell_point_by_contour(board_img):
     # cv2.imshow("board_img", board_img)
     temp_board_img = board_img.copy()
-    w, h, _ = temp_board_img.shape
+    h, w, _ = temp_board_img.shape
 
     indent = 15
     size_cell = 122
@@ -306,7 +306,7 @@ def get_value_by_color(color, deviation=5):
 def get_main_color_bgr(image):
     img_points = []
 
-    w, h = image.shape[:2]
+    h, w = image.shape[:2]
     for i in range(h):
         for j in range(w):
             img_points.append(tuple(image[i, j]))
