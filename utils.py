@@ -4,6 +4,11 @@
 __author__ = 'ipetrash'
 
 
+import logging
+import os
+import sys
+from logging.handlers import RotatingFileHandler
+
 import cv2
 import pyautogui
 
@@ -14,13 +19,11 @@ class NotFoundItem(Exception):
 
 def get_logger(name=__file__, file='log.txt', encoding='utf-8', dir_name='logs'):
     if dir_name:
-        import os
         if not os.path.exists(dir_name):
             os.makedirs(dir_name)
 
         file = dir_name + '/' + file
 
-    import logging
     log = logging.getLogger(name)
     log.setLevel(logging.DEBUG)
 
@@ -29,12 +32,10 @@ def get_logger(name=__file__, file='log.txt', encoding='utf-8', dir_name='logs')
     # Simple file handler
     # fh = logging.FileHandler(file, encoding=encoding)
     # or:
-    from logging.handlers import RotatingFileHandler
-    fh = RotatingFileHandler(file, maxBytes=10000000, backupCount=5, encoding=encoding)
+    fh = RotatingFileHandler(file, maxBytes=10_000_000, backupCount=5, encoding=encoding)
     fh.setFormatter(formatter)
     log.addHandler(fh)
 
-    import sys
     sh = logging.StreamHandler(stream=sys.stdout)
     sh.setFormatter(formatter)
     log.addHandler(sh)
